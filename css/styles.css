@@ -151,3 +151,176 @@ button {
     font-size: 63px;
   }
 }
+
+/* ==========================================================================
+   2. MATCHPORT - step 1, the pentagon
+
+   Measured off the reference JPGs, same method as the heading:
+
+     badge outer diameter   145px desktop / 96px mobile
+     inner disc diameter    109px         / 72px        (ring = 18px / 12px)
+     badge centre spread    scales with the badge on both breakpoints, so the
+                            whole pentagon is one shape at two sizes
+
+   The .picks box is the bounding box of the five outer circles (472x460 on
+   desktop). Every position inside is a percentage of that box, so the layout
+   is one set of numbers for both breakpoints: only the box size changes.
+   ========================================================================== */
+
+.matchport {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 93px;
+}
+
+.picks {
+  position: relative;
+  width: min(311px, 100% - 2rem);
+  aspect-ratio: 311 / 304.5;   /* the mobile reference is a hair squarer */
+
+  /* Drives the icon size. The icons render at their natural size in the
+     desktop design and at 0.662 of it on mobile, the same factor as the
+     badge (96/145), so the artwork never distorts. */
+  --icon-scale: 0.662;
+
+  /* Depth of the darker lip along the bottom of a ring. It is ~5px on a
+     145px badge, so it scales with the badge like everything else. */
+  --lip: 4px;
+}
+
+/* The pentagon sits behind everything.
+
+   Its corners do NOT sit on the badge centres. Fitting the drawing to three
+   edges measured in the reference gives a scale of 1.00, i.e. the file is
+   used at its natural 329x313, and at that size the corners land about 10px
+   inside each badge, so the lines tuck under them. Deriving the position
+   from the badge centres instead puts the whole shape ~10px too high. */
+.picks__pentagon {
+  position: absolute;
+  z-index: 0;
+  top: 15.77%;
+  left: 15.15%;
+  width: 69.7%;
+}
+
+/* --- the badge component -------------------------------------------------
+   All five buttons share this. A modifier sets only --ring (the colour) and
+   --x / --y (where on the pentagon it sits). Nothing else differs.
+   ------------------------------------------------------------------------ */
+
+.pick {
+  position: absolute;
+  z-index: 1;
+  top: var(--y);
+  left: var(--x);
+  translate: -50% -50%;
+
+  width: 30.8%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+
+  display: grid;
+  place-items: center;
+
+  background: var(--ring);
+
+  /* Two shadows doing two different jobs: the inset one carves the darker
+     lip along the bottom of the ring, which is what reads as thickness; the
+     outer one drops the whole badge onto the background. */
+  box-shadow:
+    inset 0 calc(-1 * var(--lip)) 0 0 var(--ring-dark),
+    0 5px 10px rgba(0, 0, 0, 0.2);
+
+  cursor: pointer;
+  transition: translate 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pick:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+
+/* The white disc. The inset shadow along its top edge is the gap the brief
+   asks for between the frame and the icon: it makes the disc read as if it
+   were pressed into the ring rather than pasted on top of it. */
+.pick__disc {
+  width: 75.2%;          /* 109 / 145 */
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+
+  display: grid;
+  place-items: center;
+
+  background: linear-gradient(to bottom, #dadada, #f4f4f4);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+.pick__icon {
+  scale: var(--icon-scale);
+}
+
+/* --- the only thing that changes per badge ------------------------------- */
+
+/* Percentages read straight off the reference. They are not perfectly
+   symmetric round numbers because the design itself is not: the pentagon is
+   a couple of pixels shorter than a circle-flush bounding box would make it.
+
+   --ring-dark is the colour of the lip along the bottom. It is NOT one black
+   overlay at a fixed opacity: measured against the reference, the drop in
+   lightness runs from 6 points on Scissors to 16 on Rock, so each badge
+   carries its own value. Same hue as the ring, darker and less saturated. */
+.pick--scissors {
+  --ring: var(--gradient-scissors);
+  --ring-dark: hsl(39, 82%, 43%);
+  --x: 50%;    --y: 15.76%;
+}
+.pick--spock {
+  --ring: var(--gradient-spock);
+  --ring-dark: hsl(189, 60%, 42%);
+  --x: 15.35%; --y: 43.80%;
+}
+.pick--paper {
+  --ring: var(--gradient-paper);
+  --ring-dark: hsl(230, 64%, 47%);
+  --x: 84.65%; --y: 43.80%;
+}
+.pick--lizard {
+  --ring: var(--gradient-lizard);
+  --ring-dark: hsl(261, 52%, 46%);
+  --x: 29.05%; --y: 84.24%;
+}
+.pick--rock {
+  --ring: var(--gradient-rock);
+  --ring-dark: hsl(349, 75%, 36%);
+  --x: 70.95%; --y: 84.24%;
+}
+
+@media (hover: hover) {
+  .pick:hover {
+    translate: -50% -54%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick { transition: none; }
+  .pick:hover { translate: -50% -50%; }
+}
+
+/* --- desktop ------------------------------------------------------------- */
+
+@media (min-width: 48rem) {
+
+  .matchport {
+    margin-top: 48px;
+  }
+
+  .picks {
+    width: 472px;
+    aspect-ratio: 472 / 460;
+    --icon-scale: 1;
+    --lip: 6px;
+  }
+}

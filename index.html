@@ -24,10 +24,18 @@
       overflow: hidden;
     }
 
-    .rules-container {
-      position: fixed;
-      right: 2rem;
-      bottom: 2rem;
+    .nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+      padding: 0 2rem 2rem;
+    }
+
+    @media (min-width: 48rem) {
+      .nav {
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+      }
     }
 
     .rules-button,
@@ -122,12 +130,6 @@
     }
 
     @media (max-width: 37.5rem) {
-      .rules-container {
-        right: 50%;
-        bottom: 3.5rem;
-        transform: translateX(50%);
-      }
-
       .rules-button {
         min-width: 8.125rem;
       }
@@ -180,48 +182,48 @@
     <!-- 2. MATCHPORT -->
     <main class="matchport" id="matchport" data-step="1">
 
-      <!-- STEP 1: the five options -->
+      <!-- STEP 1: the five options.
+           Every badge is the same component: same markup, one modifier class.
+           The modifier only sets the ring colour and where it sits. -->
       <div class="picks" id="picks">
-        <div class="picks__row picks__row--top">
-          <button class="pick pick--scissors" type="button" data-pick="scissors">
-            <span class="pick__disc">
-              <img class="pick__icon" src="./images/icon-scissors.svg" alt="">
-            </span>
-            <span class="visually-hidden">Scissors</span>
-          </button>
-        </div>
 
-        <div class="picks__row picks__row--middle">
-          <button class="pick pick--spock" type="button" data-pick="spock">
-            <span class="pick__disc">
-              <img class="pick__icon" src="./images/icon-spock.svg" alt="">
-            </span>
-            <span class="visually-hidden">Spock</span>
-          </button>
+        <img class="picks__pentagon" src="./images/bg-pentagon.svg" alt="">
 
-          <button class="pick pick--paper" type="button" data-pick="paper">
-            <span class="pick__disc">
-              <img class="pick__icon" src="./images/icon-paper.svg" alt="">
-            </span>
-            <span class="visually-hidden">Paper</span>
-          </button>
-        </div>
+        <button class="pick pick--scissors" type="button" data-pick="scissors">
+          <span class="pick__disc">
+            <img class="pick__icon" src="./images/icon-scissors.svg" alt="">
+          </span>
+          <span class="visually-hidden">Scissors</span>
+        </button>
 
-        <div class="picks__row picks__row--bottom">
-          <button class="pick pick--lizard" type="button" data-pick="lizard">
-            <span class="pick__disc">
-              <img class="pick__icon" src="./images/icon-lizard.svg" alt="">
-            </span>
-            <span class="visually-hidden">Lizard</span>
-          </button>
+        <button class="pick pick--spock" type="button" data-pick="spock">
+          <span class="pick__disc">
+            <img class="pick__icon" src="./images/icon-spock.svg" alt="">
+          </span>
+          <span class="visually-hidden">Spock</span>
+        </button>
 
-          <button class="pick pick--rock" type="button" data-pick="rock">
-            <span class="pick__disc">
-              <img class="pick__icon" src="./images/icon-rock.svg" alt="">
-            </span>
-            <span class="visually-hidden">Rock</span>
-          </button>
-        </div>
+        <button class="pick pick--paper" type="button" data-pick="paper">
+          <span class="pick__disc">
+            <img class="pick__icon" src="./images/icon-paper.svg" alt="">
+          </span>
+          <span class="visually-hidden">Paper</span>
+        </button>
+
+        <button class="pick pick--lizard" type="button" data-pick="lizard">
+          <span class="pick__disc">
+            <img class="pick__icon" src="./images/icon-lizard.svg" alt="">
+          </span>
+          <span class="visually-hidden">Lizard</span>
+        </button>
+
+        <button class="pick pick--rock" type="button" data-pick="rock">
+          <span class="pick__disc">
+            <img class="pick__icon" src="./images/icon-rock.svg" alt="">
+          </span>
+          <span class="visually-hidden">Rock</span>
+        </button>
+
       </div>
 
       <!-- STEPS 2, 3 and 4: the match -->

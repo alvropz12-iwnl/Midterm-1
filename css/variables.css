@@ -33,11 +33,15 @@
   --spock-from: var(--cyan-from);
   --spock-to:   var(--cyan-to);
 
-  --gradient-scissors: linear-gradient(to bottom, var(--scissors-from), var(--scissors-to));
-  --gradient-paper:    linear-gradient(to bottom, var(--paper-from),    var(--paper-to));
-  --gradient-rock:     linear-gradient(to bottom, var(--rock-from),     var(--rock-to));
-  --gradient-lizard:   linear-gradient(to bottom, var(--lizard-from),   var(--lizard-to));
-  --gradient-spock:    linear-gradient(to bottom, var(--spock-from),    var(--spock-to));
+  /* Note the order: the brief lists "from -> to", but in the design files the
+     LIGHTER of the two stops is on top. Measured on all five badges, e.g.
+     Spock reads hsl(189,58%,57%) at the top of its ring (the "to" value) and
+     hsl(190,60%,53%) at the bottom (the "from" value). So "to" comes first. */
+  --gradient-scissors: linear-gradient(to bottom, var(--scissors-to), var(--scissors-from));
+  --gradient-paper:    linear-gradient(to bottom, var(--paper-to),    var(--paper-from));
+  --gradient-rock:     linear-gradient(to bottom, var(--rock-to),     var(--rock-from));
+  --gradient-lizard:   linear-gradient(to bottom, var(--lizard-to),   var(--lizard-from));
+  --gradient-spock:    linear-gradient(to bottom, var(--spock-to),    var(--spock-from));
 
   /* ------------------------------------------------------------------
      SPEC · Neutral colors
