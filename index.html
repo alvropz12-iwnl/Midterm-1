@@ -12,6 +12,7 @@
 
   <link rel="stylesheet" href="./css/variables.css">
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./modal/rules-modal.css">
 
   <title>Rock, Paper, Scissors, Lizard, Spock</title>
 
@@ -107,20 +108,11 @@
 
     <!-- 3. NAV -->
     <nav class="nav">
-      <button class="btn-rules" type="button" id="open-rules">Rules</button>
+      <rules-modal></rules-modal>
     </nav>
 
   </div>
 
-  <!-- Rules modal -->
-  <dialog class="rules" id="rules">
-    <h2 class="rules__title">Rules</h2>
-    <img class="rules__diagram" src="./images/image-rules-bonus.svg" alt="Scissors beats Paper. Paper beats Rock. Rock beats Lizard. Lizard beats Spock. Spock beats Scissors. Scissors beats Lizard. Paper beats Spock. Rock beats Scissors. Lizard beats Paper. Spock beats Rock.">
-    <button class="rules__close" type="button" id="close-rules">
-      <img src="./images/icon-close.svg" alt="">
-      <span class="visually-hidden">Close rules</span>
-    </button>
-  </dialog>
-
+  <script type="module" src="./modal/rules-modal.js"></script>
 </body>
 </html>
