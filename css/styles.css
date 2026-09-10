@@ -171,18 +171,23 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 93px;
 }
 
 .picks {
   position: relative;
   width: min(311px, 100% - 2rem);
+  margin-top: 93px;
   aspect-ratio: 311 / 304.5;   /* the mobile reference is a hair squarer */
 
   /* Drives the icon size. The icons render at their natural size in the
      desktop design and at 0.662 of it on mobile, the same factor as the
      badge (96/145), so the artwork never distorts. */
   --icon-scale: 0.662;
+
+  /* Banda superior del disco. En design/desktop-step-1-bonus.jpg va de
+     y=264 a y=270 con un corte limpio arriba y abajo: es una franja solida
+     de 6px en un disco de 109px, no una sombra difuminada. */
+  --disc-shadow: inset 0 3.8px 0 rgb(186, 190, 210);
 
   /* Depth of the darker lip along the bottom of a ring. It is ~5px on a
      145px badge, so it scales with the badge like everything else. */
@@ -210,13 +215,6 @@ button {
    ------------------------------------------------------------------------ */
 
 .pick {
-  position: absolute;
-  z-index: 1;
-  top: var(--y);
-  left: var(--x);
-  translate: -50% -50%;
-
-  width: 30.8%;
   aspect-ratio: 1;
   padding: 0;
   border: 0;
@@ -230,15 +228,30 @@ button {
   /* Two shadows doing two different jobs: the inset one carves the darker
      lip along the bottom of the ring, which is what reads as thickness; the
      outer one drops the whole badge onto the background. */
+  /* Three shadows, three jobs. --lip-drop is the slab of colour that sits
+     BELOW the circle: measured on the big badge the dark band runs 12px, of
+     which 7px fall outside the circle, so an inset alone cannot draw it.
+     --lip darkens the bottom of the ring itself, and the last one drops the
+     whole badge onto the background. */
   box-shadow:
+    0 var(--lip-drop) 0 0 var(--ring-dark),
     inset 0 calc(-1 * var(--lip)) 0 0 var(--ring-dark),
     0 5px 10px rgba(0, 0, 0, 0.2);
+}
 
+/* Only the five buttons in the pentagon are placed and clickable. */
+.picks .pick {
+  position: absolute;
+  z-index: 1;
+  top: var(--y);
+  left: var(--x);
+  translate: -50% -50%;
+  width: 30.8%;
   cursor: pointer;
   transition: translate 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pick:focus-visible {
+.picks .pick:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 5px;
 }
@@ -247,7 +260,7 @@ button {
    asks for between the frame and the icon: it makes the disc read as if it
    were pressed into the ring rather than pasted on top of it. */
 .pick__disc {
-  width: 75.2%;          /* 109 / 145 */
+  width: var(--disc, 75.2%);   /* 109 / 145 */
   aspect-ratio: 1;
   border-radius: var(--radius-full);
 
@@ -255,7 +268,7 @@ button {
   place-items: center;
 
   background: linear-gradient(to bottom, #dadada, #f4f4f4);
-  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--disc-shadow);
 }
 
 .pick__icon {
@@ -298,29 +311,140 @@ button {
   --x: 70.95%; --y: 84.24%;
 }
 
+/* Hover belongs to the pentagon only. Once the match starts, the badges on
+   screen are a readout of what was already chosen, not something to click,
+   so they must not react to the pointer. Scoping to `.picks` keeps the same
+   component inert everywhere else. */
 @media (hover: hover) {
-  .pick:hover {
+  .picks .pick:hover {
     translate: -50% -54%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pick { transition: none; }
-  .pick:hover { translate: -50% -50%; }
+  .picks .pick { transition: none; }
+  .picks .pick:hover { translate: -50% -50%; }
 }
 
 /* --- desktop ------------------------------------------------------------- */
 
 @media (min-width: 48rem) {
 
-  .matchport {
-    margin-top: 48px;
-  }
-
   .picks {
+    margin-top: 48px;
     width: 472px;
     aspect-ratio: 472 / 460;
     --icon-scale: 1;
+    --disc-shadow: inset 0 5.7px 0 rgb(186, 190, 210);
     --lip: 6px;
+    --lip-drop: 2px;
+  }
+}
+
+/* ==========================================================================
+   2. MATCHPORT - steps 2 and 3, the two picks
+
+   One horizontal container, two sides. Measured on the reference:
+
+                        desktop        mobile
+     badge diameter     293px          130px
+     empty circle       223px          98px      (= the white disc, 75.2%)
+     gap between sides  70.5px         56.5px
+     label cap height   17px           11px
+     label position     above the badge / below it on mobile
+
+   The slot keeps the full badge size even while it is empty, which is why
+   the two columns do not shift when the house pick appears: measured across
+   steps 2 and 3, the centres stay put (x 493 and 856 on desktop).
+   ========================================================================== */
+
+.match {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 56.5px;
+  margin-top: 98.5px;
+
+  --icon-scale: 0.882;
+  --lip: 4px;
+  --lip-drop: 2px;
+  --disc-shadow: inset 0 4.75px 0 rgb(186, 190, 210);
+}
+
+.match[hidden] {
+  display: none;
+}
+
+.match__side {
+  display: flex;
+  flex-direction: column-reverse;   /* mobile puts the label under the badge */
+  align-items: center;
+  gap: 29px;
+
+  /* Fixed, and equal to the slot. "THE HOUSE PICKED" is wider than the badge
+     it sits over, so letting the column size to its content pushed the two
+     sides apart. The label simply overhangs, centred, as in the design. */
+  width: 130px;
+}
+
+.match__label {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.match__slot {
+  width: 130px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+/* The waiting state: a plain darker disc the size of the white one. Measured
+   as a flat 12% black over whatever the background happens to be there. */
+.match__slot--empty::before {
+  content: "";
+  width: 75.2%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.match__slot .pick {
+  width: 100%;
+}
+
+/* --- desktop ------------------------------------------------------------- */
+
+@media (min-width: 48rem) {
+
+  .match {
+    gap: 70.5px;
+    margin-top: 77.8px;
+    --icon-scale: 1.98;
+    --lip: 6px;
+    --lip-drop: 7px;
+    --disc-shadow: inset 0 11.4px 0 rgb(186, 190, 210);
+    --disc: 76.1%;             /* 223 / 293 */
+  }
+
+  .match__side {
+    flex-direction: column;         /* desktop puts the label on top */
+    gap: 64px;
+    width: 293px;
+  }
+
+  .match__label {
+    font-size: 24px;
+    letter-spacing: 2.8px;
+  }
+
+  .match__slot {
+    width: 293px;
   }
 }

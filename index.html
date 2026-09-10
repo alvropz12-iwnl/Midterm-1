@@ -24,17 +24,21 @@
       overflow: hidden;
     }
 
+    /* Medido en design/mobile-step-1-bonus.jpg (375x750): la fila baja de
+       badges termina en y=523 y el boton arranca en y=653, o sea 130px de
+       aire, y su base queda a 57px del fondo. */
     .nav {
       display: flex;
       justify-content: center;
-      margin-top: 2rem;
-      padding: 0 2rem 2rem;
+      margin-top: 130px;
+      padding: 0 2rem 57px;
     }
 
     @media (min-width: 48rem) {
       .nav {
         justify-content: flex-end;
-        margin-top: 1.5rem;
+        margin-top: 0;
+        padding: 0 2rem 32px;
       }
     }
 
@@ -147,13 +151,29 @@
         flex-direction: column;
       }
 
+      /* El header se disuelve para que titulo, diagrama y la X sean
+         hermanos en la columna y la X pueda irse al fondo. */
       .rules-modal__header {
+        display: contents;
+      }
+
+      .rules-modal__title {
+        order: 1;
         margin-bottom: clamp(3rem, 12vh, 6rem);
+        text-align: center;
       }
 
       .rules-modal__diagram {
+        order: 2;
         width: min(21rem, 100%);
         margin: 0 auto;
+      }
+
+      .rules-modal__close {
+        order: 3;
+        margin: auto auto 0;
+        padding-top: clamp(3rem, 12vh, 6rem);
+        height: auto;
       }
     }
   </style>
@@ -227,7 +247,7 @@
       </div>
 
       <!-- STEPS 2, 3 and 4: the match -->
-      <div class="match" id="match" hidden>
+      <div class="match" id="match" hidden aria-live="polite">
 
         <div class="match__side" id="user-side">
           <p class="match__label">You Picked</p>
@@ -276,7 +296,7 @@
       aria-labelledby="rules-title"
     >
       <header class="rules-modal__header">
-        <h1 class="rules-modal__title" id="rules-title">Rules</h1>
+        <h2 class="rules-modal__title" id="rules-title">Rules</h2>
         <button class="rules-modal__close" type="button" id="close-rules" aria-label="Close rules">
           <img src="./images/icon-close.svg" alt="">
         </button>
@@ -318,5 +338,7 @@
       if (event.key === "Escape" && !backdrop.hidden) closeRules();
     });
   </script>
+
+  <script src="./js/game.js"></script>
 </body>
 </html>
