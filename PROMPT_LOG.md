@@ -6,6 +6,8 @@
 **Repo:** https://github.com/alvropz12-iwnl/Midterm-1
 **Scope:** This midterm only.
   
+> **Authorship watermark:** the entries from **"Cloning the midterm repo"** onwards were written and sent by **Zantiago Vargas Beltran**; their `### Prompt` blocks are his words, verbatim. The five entries before that one belong to Alvaro Perez Fajardo.
+
 Every entry has four parts: the date and tool, the exact prompt, what came out of it, and the notes on what I changed by hand afterwards.
 
 ---
@@ -219,6 +221,8 @@ Where the generated log lives: [`PROMPT_LOG.md`](PROMPT_LOG.md), beginning at th
 ---
 
 ---
+
+<!-- ===== From here on, every logged prompt is Zantiago Vargas Beltran's ===== -->
 
 ## Cloning the midterm repo
 
@@ -669,3 +673,7 @@ The session transcripts in `~/.claude/projects/…/*.jsonl` were parsed and ever
 - The step 4 entry has to be finished when that screen is done.
 
 ---
+
+---
+
+_Prompts logged from "Cloning the midterm repo" onwards belong to Zantiago Vargas Beltran._

@@ -527,9 +527,14 @@ button {
   outline-offset: 4px;
 }
 
-/* --- desktop ------------------------------------------------------------- */
+/* --- desktop -------------------------------------------------------------
+   62rem, not the 48rem the rest of the page switches at. In step 4 the desktop
+   match is 939px wide (293 + 66 + 220 + 66 + 293), so between 768px and about
+   940px the two badges ran off both edges and got clipped. The stacked layout
+   holds until there is genuinely room for the wide one.
+   ------------------------------------------------------------------------- */
 
-@media (min-width: 48rem) {
+@media (min-width: 62rem) {
 
   .match {
     flex-wrap: nowrap;
@@ -569,8 +574,17 @@ button {
 
 /* The middle column only exists in step 4, and it adds a second gap, so the
    two sides sit further apart than in steps 2 and 3. */
-@media (min-width: 48rem) {
+@media (min-width: 62rem) {
   .matchport[data-step="4"] .match {
     gap: 66.25px;
+  }
+}
+
+/* Below the 375px the design targets, "THE HOUSE PICKED" is wider than the
+   column it sits over and was running past the right edge. Pulling the two
+   sides together buys back the room without touching the 375px layout. */
+@media (max-width: 374px) {
+  .match {
+    column-gap: 24px;
   }
 }

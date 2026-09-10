@@ -16,7 +16,7 @@ const HOUSE_DELAY = 1400;
 const RESULT_DELAY = 700;
 
 /* Where the score survives a refresh. */
-const STORE_KEY = "Rock Paper Scissors first midterm";
+const STORE_KEY = "RPSF_Term";
 
 const matchport = document.getElementById("matchport");
 const picks = document.getElementById("picks");
