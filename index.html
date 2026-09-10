@@ -2,25 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Rock, Paper, Scissors</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/styles.css">
+
+  <title>Rock, Paper, Scissors, Lizard, Spock</title>
 
 </head>
 <body>
 
-  Score
-  Rules
+  <div class="game">
 
-  You Picked
-  The House Picked
+    <!-- 1. HEADING -->
+    <header class="heading">
+      <h1 class="logo-container">
+        <span class="logo-line">Rock</span>
+        <span class="logo-line">Paper</span>
+        <span class="logo-line">Scissors</span>
+        <span class="logo-line">Lizard</span>
+        <span class="logo-line">Spock</span>
+      </h1>
 
-  You Win
-  You Lose
+      <div class="score-container">
+        <p class="score-label">Score</p>
+        <p class="score-value" id="score" aria-live="polite">0</p>
+      </div>
+    </header>
 
-  Play Again
-  
+    <!-- 2. MATCHPORT -->
+    <main class="matchport" id="matchport" data-step="1">
+
+      <!-- STEP 1: the five options -->
+      <div class="picks" id="picks">
+        <div class="picks__row picks__row--top">
+          <button class="pick pick--scissors" type="button" data-pick="scissors">
+            <span class="pick__disc">
+              <img class="pick__icon" src="./images/icon-scissors.svg" alt="">
+            </span>
+            <span class="visually-hidden">Scissors</span>
+          </button>
+        </div>
+
+        <div class="picks__row picks__row--middle">
+          <button class="pick pick--spock" type="button" data-pick="spock">
+            <span class="pick__disc">
+              <img class="pick__icon" src="./images/icon-spock.svg" alt="">
+            </span>
+            <span class="visually-hidden">Spock</span>
+          </button>
+
+          <button class="pick pick--paper" type="button" data-pick="paper">
+            <span class="pick__disc">
+              <img class="pick__icon" src="./images/icon-paper.svg" alt="">
+            </span>
+            <span class="visually-hidden">Paper</span>
+          </button>
+        </div>
+
+        <div class="picks__row picks__row--bottom">
+          <button class="pick pick--lizard" type="button" data-pick="lizard">
+            <span class="pick__disc">
+              <img class="pick__icon" src="./images/icon-lizard.svg" alt="">
+            </span>
+            <span class="visually-hidden">Lizard</span>
+          </button>
+
+          <button class="pick pick--rock" type="button" data-pick="rock">
+            <span class="pick__disc">
+              <img class="pick__icon" src="./images/icon-rock.svg" alt="">
+            </span>
+            <span class="visually-hidden">Rock</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEPS 2, 3 and 4: the match -->
+      <div class="match" id="match" hidden>
+
+        <div class="match__side" id="user-side">
+          <p class="match__label">You Picked</p>
+          <div class="match__slot" id="user-pick"></div>
+        </div>
+
+        <div class="match__outcome" id="outcome" hidden>
+          <p class="match__result" id="result" aria-live="polite"></p>
+          <button class="btn-play-again" type="button" id="play-again">Play Again</button>
+        </div>
+
+        <div class="match__side" id="house-side">
+          <p class="match__label">The House Picked</p>
+          <div class="match__slot match__slot--empty" id="house-pick"></div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- 3. NAV -->
+    <nav class="nav">
+      <button class="btn-rules" type="button" id="open-rules">Rules</button>
+    </nav>
+
+  </div>
+
+  <!-- Rules modal -->
+  <dialog class="rules" id="rules">
+    <h2 class="rules__title">Rules</h2>
+    <img class="rules__diagram" src="./images/image-rules-bonus.svg" alt="Scissors beats Paper. Paper beats Rock. Rock beats Lizard. Lizard beats Spock. Spock beats Scissors. Scissors beats Lizard. Paper beats Spock. Rock beats Scissors. Lizard beats Paper. Spock beats Rock.">
+    <button class="rules__close" type="button" id="close-rules">
+      <img src="./images/icon-close.svg" alt="">
+      <span class="visually-hidden">Close rules</span>
+    </button>
+  </dialog>
+
 </body>
 </html>

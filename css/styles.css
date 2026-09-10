@@ -1,0 +1,153 @@
+/* ==========================================================================
+   Rock, Paper, Scissors, Lizard, Spock
+   Reset and base styles. The design tokens live in css/variables.css and
+   that file is linked first, so everything here can already read them.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-weight: var(--fw-semibold);
+  color: #fff;
+  background: var(--bg-radial);
+  background-attachment: fixed;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Buttons do not inherit the page font on their own. */
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Text that only screen readers need: the pick buttons are icon-only, so
+   each one carries its name here instead of an aria-label. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   1. HEADING
+   Every number below was measured off design/desktop-step-1-bonus.jpg
+   (1366x768) and design/mobile-step-1-bonus.jpg (375x750), not eyeballed.
+   Mobile first, so the bare rules are the 375px design.
+   ========================================================================== */
+
+.heading {
+  /* 315px wide inside a 375px viewport = 30px of air on each side, and it
+     stops growing at the 704px the desktop reference uses. */
+  width: min(704px, 100% - 60px);
+  margin: 30px auto 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* The left inset is roughly double the right one in both references: the
+     logo sits further in than the score box does. */
+  padding: 11px 11px 11px 22px;
+
+  border: 3px solid var(--header-outline);
+  border-radius: 8px;
+}
+
+/* --- logo: five stacked words, no image ---------------------------------- */
+
+.logo-container {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 12.2px;
+  font-weight: var(--fw-bold);
+  line-height: 9.75px;       /* measured pitch between cap tops */
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* --- score box ----------------------------------------------------------- */
+
+.score-container {
+  flex: none;
+  width: 80px;
+  height: 72px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 11px;
+  border-radius: 5px;
+
+  /* Not flat white: the reference fades to a light grey at the bottom. */
+  background: linear-gradient(180deg, #fff 0%, #f3f3f3 100%);
+}
+
+.score-label {
+  margin: 0;
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-score);
+  text-transform: uppercase;
+  color: var(--text-score);
+}
+
+.score-value {
+  margin: 2px 0 0;
+  font-size: 39px;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  color: var(--text-dark);
+}
+
+/* --- desktop ------------------------------------------------------------- */
+
+@media (min-width: 48rem) {
+
+  .heading {
+    margin-top: 46px;
+    padding: 17px 22px 17px 30px;
+    border-radius: 18px;
+  }
+
+  .logo-container {
+    font-size: 27.7px;
+    line-height: 22px;
+  }
+
+  .score-container {
+    width: 150px;
+    height: 114px;
+    padding-top: 17px;
+    border-radius: 8px;
+  }
+
+  .score-label {
+    font-size: 17px;
+    letter-spacing: 1.9px;
+  }
+
+  .score-value {
+    margin-top: 3px;
+    font-size: 63px;
+  }
+}
