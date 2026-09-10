@@ -1,11 +1,11 @@
 # First Midterm - AI Prompt & Audit Log
 
 **Course:** COM-111 Web Application Development
-**Student:** Zantiago Vargas Beltran
+**Student:** Zantiago Vargas Beltran and Alvaro Perez Fajardo
 **Assignment:** First Midterm - Rock, Paper, Scissors (`index.html`, `design/`, `images/`)
 **Repo:** https://github.com/alvropz12-iwnl/Midterm-1
-**Scope:** This midterm only. Individual classwork is logged in `Container/Classwork/PROMPT_LOG.md`; the team project in `Container/PROMPT_LOG.md`.
-
+**Scope:** This midterm only.
+  
 Every entry has four parts: the date and tool, the exact prompt, what came out of it, and the notes on what I changed by hand afterwards.
 
 ---
@@ -24,7 +24,9 @@ _Update this table as I add or drop a tool. One row per tool, not per prompt._
 
 | Tool | Model / version | What I use it for | First used |
 | :--- | :--- | :--- | :--- |
-| | | | |
+| Claude Code (CLI) | Claude Opus 5 | Layout scaffolding, CSS measured against the design JPGs, refactors, git chores | 2026-09-10 |
+| `visual-check` skill | Chrome headless (Playwright) | Screenshots at 375x750, 390x844 and 1366x768 to compare against `design/` | 2026-09-10 |
+| `top-design` skill | Claude Opus 5 | Pixel-perfect review of the heading container | 2026-09-10 |
 
 ---
 
@@ -68,4 +70,453 @@ audited fixes at lines A-B. Commit `abc1234`.
 
 ## Log
 
-_First entry goes here._
+## Cloning the midterm repo
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Clona aqui mismo este repo, con la cuenta de la UP: https://github.com/alvropz12-iwnl/Midterm-1
+```
+
+### Result
+
+Repo cloned into this folder with the UP GitHub account. No code written. Starting point is commit `ad5b4dd` (`Initial commit`), an `index.html` with only bare text labels plus the `design/` and `images/` folders from the brief.
+
+### Notes and manual changes
+
+- Nothing to audit, it is a git clone. Checked with `git remote -v` that the origin points at `alvropz12-iwnl/Midterm-1` and not at a personal account.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Creating this prompt log
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Ve a la carpeta padre y luego entra al container. En el container, busca el prompt block que utilizo en el classwork y haz una copia limpia desde cero para este first term, en donde voy a registrar todo el uso de ella y qué estoy usando.
+```
+
+### Result
+
+Created `PROMPT_LOG.md` (this file) reusing the structure of the classwork log: header, rules of engagement, tools table, entry template and log section. Commit `66d4d56` (`added prompt log`).
+
+### Notes and manual changes
+
+- **Scope line was copied wrong at first.** It pointed at the classwork paths. I rewrote it so it says this log covers the midterm only and points at the other two logs. `PROMPT_LOG.md:7`.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Base HTML layout: HEADING / MATCHPORT / NAV
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Iniciemos con el layout base HTML, lo dividiremos en 3 secciones HEADING, MATCHPORT, NAV, el van de orden superior a inferior, [Image #1] esta es nuestra referencia, y dividiremos los containers de la siguiente forma:
+
+1. El heading container, se divide en 2, izquierda el .logo-container, y derecha el .score-container, que tiene dentro 2 subdivs verticales, en el superior va el label de "score" y debajo el label aun mas grande de valor del "score", todo este container tiene un border stroke blanco como en la referencia.
+
+2. En el MATCHPOINT container, dependiendo el step tendremos un solo main container, tipo flexbox, donde mostraremos primero todas las opciones, aqui el usuario selecciona la que quiere, los svg en badges cn rounded radius y una sombra tipo neumofismo extarior, en el step 2 se crean 2 sub containers [Image #2], S2: [Image #3] donde se muestra en el container izquierdo el user pick, y a la dercha el house pick (logica tbd). S3: se muestra en UI lo que eligio la casa [Image #4] y se procesa la logica de winner, para al final agregar un background roundeed glow gon gradient fade out al winner y mostramos en el medio un nuevo div (que empuje alos dos laterales segun el flexbox) a los lados.. donde muestra el outcome.
+
+Para todo el layout utilizaremos un layout flexible, para que sea responsive, en las diferentes medidas de @media especificadas en el @Problem_Description.md (diferentes breakpoints de media CSS), en mobile se mantiene el orden de 1. Heading, 2. Match 3. Rules/nav. Empieza entonces por tomar el @index.html y hacer el base layout, mapping de botones segun las referencias en @design/ , apegate a mis instrucciones. y a las referencias, como en goal tratar de imitar el look and feel de la ref.
+```
+
+_(I sent this prompt twice: the second time I added the sentence about keeping the order heading → match → rules on mobile, which was missing in the first one.)_
+
+### Result
+
+`index.html` rewritten from the 26-line stub into the three-section skeleton: `.heading` (with `.logo-container` and `.score-container`), `<main class="matchport">` and `<nav class="nav">`, plus the Google Fonts preconnect and the two stylesheet links.
+
+Where the code lives: [`index.html`](index.html), the `<body>` section.
+
+### Notes and manual changes
+
+- **No styling yet, on purpose.** The AI wanted to write CSS in the same pass. I stopped it: structure first, design system second, so the classes exist before anything paints them.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Design tokens and fonts from the brief
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Ahora, toma el design system especificado en el @Problem_Description.md , y prepara las diferentes vars en @css/ y  las fonts con loading de google en los weights especificados, apegate al design system ya dado.
+```
+
+### Result
+
+`css/variables.css` with the palette, gradients, font family and weights straight out of `Problem_Description.md`, and the Barlow Semi Condensed 600/700 link with `preconnect` in the `<head>`.
+
+Where the code lives: [`css/variables.css`](css/variables.css) and [`index.html`](index.html) `<head>`.
+
+### Notes and manual changes
+
+- **Only the weights the brief lists.** It offered to load 400 and 500 as well. Dropped: the design only uses 600 and 700, and every extra weight is another font file.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Heading container, pixel for pixel
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5) + `top-design` skill
+
+### Prompt
+
+```text
+[Image #5] Ahora con el DS ya hecho, y las especificaciones, empecemos por crear el hading container, 1:1 pixel based en la referencia. [Image #6] Utiliza tu skill de diseno y awwardds para hacer un pixel perfect matching. Esta seccion no requiere de assets de images, todo es plain code y divs anidados
+```
+
+### Result
+
+`.heading`, `.logo-container` and `.score-container` written with numbers measured off `design/desktop-step-1-bonus.jpg` and `design/mobile-step-1-bonus.jpg`, no images: the five-word logo is five stacked `<span>`s. Mobile first, one desktop media query. Commit `4d18e43` (`Add heading container matched pixel-for-pixel to the design`).
+
+Where the code lives: [`css/styles.css`](css/styles.css) lines 55-153.
+
+### Notes and manual changes
+
+- **Round numbers instead of measurements.** The first pass used `1rem`, `2rem`, "looks about right". I made it measure the JPGs instead, which is where `width: min(704px, 100% - 60px)`, the `11px 11px 11px 22px` padding and the `12.2px` logo size come from. Those comments in the CSS are the record of the measuring.
+- Verified with the `visual-check` skill at 1366x768 and 375x750 against the design JPGs.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Step 1: the five badges
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Excelente, ahora vamos con el STEP 1, en container del MATCH, los recursos estan en @images/ , para cada badge utilizas el image, haces un container, lo redondeamos, hacemos otro outter container para hacer el "marco" y entre el div exterior del marco y el div interior de el svg debe haber una shadow, en la parte superior del badge, para dar "depth" tipo neumorfista, muy sutil.[Image #7]
+```
+
+### Result
+
+First version of the badge: outer ring, inner white disc and the icon, with the inset shadow along the top of the disc.
+
+### Notes and manual changes
+
+- **Interrupted.** I stopped the run midway because I had the rules modal ready in another branch and wanted it merged first. Picked this back up two prompts later, with the reusable-component idea.
+
+### Still open
+
+- Went on in the "pentagon" entry below.
+
+---
+
+## Pulling the rules modal from the remote
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Prompt 1 - haz pull a los cambios, con GHPM del repo remoto
+Prompt 2 - Puh a todo
+```
+
+### Result
+
+`git pull` of the branch with the rules-modal component (`c1bd3fb`, merged as `a574d76`) and then push of everything.
+
+### Notes and manual changes
+
+- Nothing generated, only git. I checked the merge by hand because the modal touched `index.html`, the same file I was working on.
+
+### Still open
+
+- The modal came in as a separate `modal/` folder, which broke the single-file rule. Fixed in the next entry.
+
+---
+
+## Inlining the modal into the monolith
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+[Image #1] El botón de rules no está renderizando. Todo debería vivir en el único monolito, que es el index.html que tenemos en root. Ahí vas a adaptarle la lógica del modal. Copias y pegas todo el código relacionado con el modal al index.html.
+```
+
+### Result
+
+`modal/rules-modal.css` and `modal/rules-modal.js` moved into `index.html` as a `<style>` block and a `<script>` block, and the `modal/` folder deleted. Commit `b66bf23` (`Inline rules modal into index.html monolith`).
+
+Where the code lives: [`index.html`](index.html), the `RULES MODAL` style block and the script at the bottom.
+
+### Notes and manual changes
+
+- **The button was not rendering** because the stylesheet link pointed at the deleted folder. Inlining fixed the cause, not just the symptom.
+- I kept the accessibility wiring the modal already had: `aria-haspopup`, `aria-controls`, `aria-expanded`, focus back to the trigger on close and Escape to close.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Pentagon behind the badges, one reusable badge component
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Prompt 1 - Lo que hice fue importar el trabajo que tenía hecho sobre el modal de reglas. No te preocupes, por eso tú continúa con tu tarea.
+Prompt 2 - Importante para este layout: creo que lo que podemos hacer es poner, detrás del fondo, en el `z-index` más bajo, el SVG del pentágono y después, encima, cada uno de los badges. ¿Podemos hacer un componente que se recicle? Este componente reciclado se utilizará por batch y solamente cambiamos el icono y el color del `margin` del `border`.
+```
+
+### Result
+
+`.picks` as a positioned box with `images/bg-pentagon.svg` at the bottom of the stack and five `.pick` buttons on top. One component, one modifier class per badge (`.pick--rock`, `.pick--paper`, …) that only sets the ring colour and the `--x` / `--y` position. Every position is a percentage of the box, so the same numbers work on both breakpoints. Commit `7b445f2` (`Build step 1: the pentagon of five picks`).
+
+Where the code lives: [`css/styles.css`](css/styles.css) lines 170-340.
+
+### Notes and manual changes
+
+- **The pentagon was ~10px too high** when its position was derived from the badge centres. I had it fitted to three edges measured in the reference instead, which puts the SVG at its natural 329x313 size with the corners tucked under the badges. The reasoning is written in the comment above `.picks__pentagon`.
+- Verified with `visual-check` at 1366x768 against `design/desktop-step-1-bonus.jpg`.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Rules button out of `fixed`, and the nav gap
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Al botón de reglas hay que quitarle el `sticky`. Además hay que reducir el margen entre el `div` principal de match y el `div` de navegación, que es donde se muestra el botón de reglas.
+```
+
+### Result
+
+`.rules-container { position: fixed }` replaced by a flow `.nav`: centred on mobile, right-aligned from 48rem up. The mobile override that pinned the button to the bottom of the viewport was deleted too.
+
+Where the code lives: [`index.html`](index.html), `.nav` rule in the style block.
+
+### Notes and manual changes
+
+- **`fixed` was doing two jobs.** It positioned the button *and* gave it the air below it. Once it flowed, the spacing had to be written explicitly, which is what the next entries are about.
+- Verified with `visual-check` at 1440x900.
+
+### Still open
+
+- The gap ended up too small. Fixed two entries down.
+
+---
+
+## Mobile rules modal: centred title, close button at the bottom
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+[Image #1] [Image #2] En móvil El modal de las reglas difiere de la referencia. El header debe estar center-aligned y en la parte inferior debe ir la X para cerrar el modal. Para móvil, adapta el flow layout para que sea responsive de esta manera.
+```
+
+### Result
+
+Under 37.5rem the `<header>` becomes `display: contents`, so title, diagram and close button are siblings of the modal column; the title is centred with `order: 1` and the X goes to the bottom with `order: 3` and `margin-top: auto`. Desktop untouched.
+
+Where the code lives: [`index.html`](index.html), the `@media (max-width: 37.5rem)` block.
+
+### Notes and manual changes
+
+- **Reordering without touching the HTML.** The close button lives inside the header in the markup, so the alternative was duplicating the button or moving it in JS. `display: contents` keeps one button, one DOM, and the tab order still matches the visual order.
+- Verified with `visual-check --mobile --click "#open-rules"` against `design/mobile-rules-modal-bonus.jpg`.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Splitting frontend and backend with a coworker
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Ahora pensando como arquitecto, ¿cómo es que podría dividir este trabajo para que yo avance todo el frontend y divida el backend a mi coworker?
+```
+
+### Result
+
+No code. The split we agreed on: `js/game.js` holds pure game logic (`PICKS`, `BEATS`, `housePick()`, `resolve()`, score and `localStorage`) with no DOM access, and `index.html` + `css/` + `js/ui.js` hold everything visual. The contract is the function signatures plus the class and `id` names the UI reads.
+
+### Notes and manual changes
+
+- **There is no real backend here.** The AI's first instinct was to talk about servers and APIs. I made it say the honest version: this is a static page, so the only meaningful split is presentation versus game logic.
+- Practical rule that came out of it: `index.html` is a monolith, so only one of us edits it, otherwise every merge conflicts.
+
+### Still open
+
+- `js/game.js` is not written yet.
+
+---
+
+## Nav spacing measured off the reference
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+[Image #3] Tenemos que agregar más margen de separación entre el `div` de match y el `div` de navegación. Anteriormente creo que lo teníamos bien, pero lo corrigí. ¿Puedes buscar en los commits anteriores para restaurarlo? y que se vea igual el spacing a la referencia[Image #4] [Image #5]
+```
+
+### Result
+
+There was nothing to restore: in every earlier commit the button was `position: fixed`, so the air came from the viewport, not from the layout. The spacing was measured instead, in `design/mobile-step-1-bonus.jpg` (375x750): bottom badges end at y=523, the button starts at y=653, so 130px of gap and 57px from its base to the bottom. Now `.nav { margin-top: 130px; padding: 0 2rem 57px }`, and on desktop `margin-top: 0` with 32px at the base.
+
+Where the code lives: [`index.html`](index.html), `.nav` rule and its desktop media query.
+
+### Notes and manual changes
+
+- **"Search the commits" gave nothing, and the honest answer was to say so** instead of inventing an old value. `git log -S"rules-container"` shows only the `fixed` version.
+- Verified with `visual-check --viewport 375x750`: badges end around 525 and the button starts around 660, 2-7px off the reference.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Steps 2 and 3: your pick and the house pick
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Si, cambialo, y tambien haz commit y push a todo, ademas Continuemos con la siguiente fase, en la que se muestra a la izquierda el batch de lo que haya elegido el usuario y, a la derecha, el house picked. Primero se ve vacío y después de unos segundos mostraremos ya lo que haya elegido el house. [Image #8]. Hagamos esta nueva screen y layout como lo platicamos antes (1 container horizonta, 2 sub containers, flexbox para adaptarse al content inside)
+```
+
+### Result
+
+`.match` with two `.match__side`s, the label above each badge on desktop and below on mobile, and an empty slot that keeps the full badge size so the two columns do not shift when the house pick lands. Commit `140b280` (`Build steps 2 and 3: the two picks side by side`).
+
+Where the code lives: [`css/styles.css`](css/styles.css) lines 334-440, [`index.html`](index.html) `.match` block.
+
+### Notes and manual changes
+
+- **The empty slot must not collapse.** The first version had the placeholder smaller than the badge, so the layout jumped when the house pick appeared. Measured across steps 2 and 3 in the design: the centres stay at x=493 and x=856 on desktop, so the slot keeps the badge size.
+- The badge here is the same component as in the pentagon, only the size variables change.
+
+### Still open
+
+- The delay before revealing the house pick needs `js/game.js`, which is not written.
+
+---
+
+## The disc's inner shadow was a gradient
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Prompt 1 - [Image #6] En el batch, el componente reciclable que estamos usando tiene una sombra interior. El problema es que nuestra sombra interior está degradada, pero la de la referencia no está degradada. Corrígelo para que coincida con esta referencia. [Image #7]
+Prompt 2 - Bien, ahora la sombra hay que hacerla un poquito más pequeña, un 5% menos de drop
+```
+
+### Result
+
+`--disc-shadow` went from a blurred `inset 0 Npx Mpx rgba(0,0,0,…)` to a solid band with no blur: `inset 0 3.8px 0 rgb(186,190,210)` on mobile and `5.7px` on desktop for the pentagon, `4.75px` / `11.4px` for the bigger match badges (already with the 5% cut).
+
+Where the code lives: [`css/styles.css`](css/styles.css) lines 190, 338, 371, 432.
+
+### Notes and manual changes
+
+- **The colour was wrong too, not just the blur.** Reading the pixel column through the yellow badge in `design/desktop-step-1-bonus.jpg`: the band runs y=264 to y=270 in `rgb(186,190,210)`, a blue-grey, and then jumps straight to the disc grey. It was never a translucent black.
+- Verified against a crop of the reference at 1366x768: solid band, same tone, clean edge.
+
+### Still open
+
+- Nothing.
+
+---
+
+## Step 4: the winner's glow
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+[Image #9] Vamos a hacer ahora el step 4. Para el efecto del ganador detrás del badge, haremos tres círculos que van de menor a mayor tamaño. Conforme van incrementando de tamaño, bajan en z-index y también bajan en transparencia para este efecto de fade.
+```
+
+### Result
+
+In progress at the time of writing this log.
+
+### Notes and manual changes
+
+- To be filled in once the entry is finished.
+
+### Still open
+
+- The whole step 4, and the game logic that decides who the winner is.
+
+---
+
+## Filling in this log
+
+**Date:** 2026-09-10 · **Tool:** Claude Code (Opus 5)
+
+### Prompt
+
+```text
+Analiza todos los prompts que tenemos en el folder de conversación de Claude sobre este proyecto y quiero que los tomes para llenar el prompt log MD. Usa las transcripciones literales de mis prompts y rellena tú lo demás.
+```
+
+### Result
+
+The session transcripts in `~/.claude/projects/…/*.jsonl` were parsed and every prompt of mine was pulled out verbatim into the entries above, in chronological order, with the results and the audit notes written from what actually happened in each session.
+
+### Notes and manual changes
+
+- **Only my prompts are literal.** Everything else (result, notes, still open) is written after the fact, so it is a summary, not a transcript.
+- Left out: the git housekeeping prompts (pull, push, commit tidying), since they produced no code.
+- The automatic security reviews that run on each diff are not prompts of mine, so they are not logged either.
+
+### Still open
+
+- The step 4 entry has to be finished when that screen is done.
+
+---
+

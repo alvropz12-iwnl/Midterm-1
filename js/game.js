@@ -15,6 +15,9 @@ const BEATS = {
 const HOUSE_DELAY = 1400;
 const RESULT_DELAY = 700;
 
+/* Where the score survives a refresh. */
+const STORE_KEY = "Rock Paper Scissors first midterm";
+
 const matchport = document.getElementById("matchport");
 const picks = document.getElementById("picks");
 const match = document.getElementById("match");
@@ -27,7 +30,19 @@ const result = document.getElementById("result");
 const playAgain = document.getElementById("play-again");
 const scoreEl = document.getElementById("score");
 
-let score = 0;
+/* Reads the saved score. Wrapped in try/catch because storage throws outright
+   when the browser blocks site data, and the stored text is checked because
+   anything can end up under that key. */
+function loadScore() {
+  try {
+    const saved = Number(localStorage.getItem(STORE_KEY));
+    return Number.isInteger(saved) ? saved : 0;
+  } catch {
+    return 0;
+  }
+}
+
+let score = loadScore();
 let timers = [];
 
 function later(fn, ms) {
@@ -73,7 +88,16 @@ function judge(user, house) {
 function setScore(next) {
   score = next;
   scoreEl.textContent = score;
+  try {
+    localStorage.setItem(STORE_KEY, score);
+  } catch {
+    /* Storage is full or blocked. The game still plays, the score just will
+       not survive a refresh, so there is nothing useful to do here. */
+  }
 }
+
+/* Paint whatever was saved before anything else happens. */
+setScore(score);
 
 function reset() {
   clearTimers();
