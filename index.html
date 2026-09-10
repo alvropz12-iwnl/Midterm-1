@@ -251,17 +251,33 @@
 
         <div class="match__side" id="user-side">
           <p class="match__label">You Picked</p>
-          <div class="match__slot" id="user-pick"></div>
+          <div class="match__slot">
+            <!-- Three circles, largest first so the smallest paints on top.
+                 Purely decorative, so it is hidden from screen readers. -->
+            <div class="glow" aria-hidden="true">
+              <span class="glow__ring glow__ring--outer"></span>
+              <span class="glow__ring glow__ring--middle"></span>
+              <span class="glow__ring glow__ring--inner"></span>
+            </div>
+            <div class="match__badge" id="user-pick"></div>
+          </div>
         </div>
 
         <div class="match__outcome" id="outcome" hidden>
-          <p class="match__result" id="result" aria-live="polite"></p>
+          <p class="match__result" id="result"></p>
           <button class="btn-play-again" type="button" id="play-again">Play Again</button>
         </div>
 
         <div class="match__side" id="house-side">
           <p class="match__label">The House Picked</p>
-          <div class="match__slot match__slot--empty" id="house-pick"></div>
+          <div class="match__slot">
+            <div class="glow" aria-hidden="true">
+              <span class="glow__ring glow__ring--outer"></span>
+              <span class="glow__ring glow__ring--middle"></span>
+              <span class="glow__ring glow__ring--inner"></span>
+            </div>
+            <div class="match__badge match__badge--empty" id="house-pick"></div>
+          </div>
         </div>
 
       </div>

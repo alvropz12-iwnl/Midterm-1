@@ -10,6 +10,15 @@
   box-sizing: border-box;
 }
 
+/* The winner's outermost glow ring is wider than the viewport and is meant to
+   run off the edge, as it does in the design. `clip` rather than `hidden`:
+   hidden only removes the scrollbar, the page can still be panned sideways. */
+html,
+body {
+  overflow-x: hidden;   /* fallback */
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -362,7 +371,8 @@ button {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 56.5px;
+  flex-wrap: wrap;          /* lets the outcome drop below on mobile */
+  gap: 80px 56.5px;
   margin-top: 98.5px;
 
   --icon-scale: 0.882;
@@ -399,7 +409,17 @@ button {
 }
 
 .match__slot {
+  position: relative;
   width: 130px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.match__badge {
+  grid-area: 1 / 1;
+  z-index: 1;              /* above the glow */
+  width: 100%;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -407,7 +427,7 @@ button {
 
 /* The waiting state: a plain darker disc the size of the white one. Measured
    as a flat 12% black over whatever the background happens to be there. */
-.match__slot--empty::before {
+.match__badge--empty::before {
   content: "";
   width: 75.2%;
   aspect-ratio: 1;
@@ -415,8 +435,96 @@ button {
   background: rgba(0, 0, 0, 0.12);
 }
 
-.match__slot .pick {
+.match__badge .pick {
   width: 100%;
+}
+
+/* --- the winner's glow ---------------------------------------------------
+   Three circles growing outward. Each is a flat white wash, and because they
+   overlap, the middle of the stack ends up brighter than its edge: that is
+   what makes the fade. Measured against the reference, the three bands lift
+   the background by +15.5, +10 and +6 out of 255.
+   ------------------------------------------------------------------------ */
+
+/* Pinned to the slot rather than laid out in it. The rings are far larger
+   than the badge, so leaving them in the flow both stretched the row and
+   made them align to its top edge instead of its centre. */
+.glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-winner .glow {
+  opacity: 1;
+}
+
+.glow__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: #fff;
+}
+
+/* Bigger means further back and fainter. */
+.glow__ring--outer  { width: 248.5%; z-index: 1; opacity: 0.028; }
+.glow__ring--middle { width: 193.2%; z-index: 2; opacity: 0.019; }
+.glow__ring--inner  { width: 144.7%; z-index: 3; opacity: 0.027; }
+
+@media (prefers-reduced-motion: reduce) {
+  .glow { transition: none; }
+}
+
+/* --- the outcome, between the two sides ---------------------------------- */
+
+.match__outcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  /* Mobile drops it onto its own line under the two badges. */
+  order: 1;
+  width: 100%;
+}
+
+.match__outcome[hidden] {
+  display: none;
+}
+
+.match__result {
+  margin: 0;
+  font-size: 55px;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn-play-again {
+  width: 220px;
+  height: 48px;
+  border: 0;
+  border-radius: 8px;
+
+  font-size: 17px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-dark);
+
+  background: linear-gradient(180deg, #fff 0%, #f4f4f4 100%);
+}
+
+.btn-play-again:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
 }
 
 /* --- desktop ------------------------------------------------------------- */
@@ -424,6 +532,7 @@ button {
 @media (min-width: 48rem) {
 
   .match {
+    flex-wrap: nowrap;
     gap: 70.5px;
     margin-top: 77.8px;
     --icon-scale: 1.98;
@@ -446,5 +555,22 @@ button {
 
   .match__slot {
     width: 293px;
+  }
+
+  .match__outcome {
+    order: 0;               /* desktop puts it back between the two sides */
+    width: auto;
+
+    /* Measured from the top of the match block: the outcome is not centred
+       on anything, it sits at a fixed offset in the design. */
+    margin-top: 165px;
+  }
+}
+
+/* The middle column only exists in step 4, and it adds a second gap, so the
+   two sides sit further apart than in steps 2 and 3. */
+@media (min-width: 48rem) {
+  .matchport[data-step="4"] .match {
+    gap: 66.25px;
   }
 }
